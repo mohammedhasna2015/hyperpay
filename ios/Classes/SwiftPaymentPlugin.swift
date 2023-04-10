@@ -25,7 +25,7 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
     var setStorePaymentDetailsMode:String = "";
     var lang:String = "";
     var amount:Double = 1;
-    var themColorHex:String = "#1298AD";
+    var themColorHex:String = "#464674";
     var safariVC: SFSafariViewController?
     var transaction: OPPTransaction?
     var provider = OPPPaymentProvider(mode: OPPProviderMode.test)
