@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hyperpay_plugin/flutter_hyperpay.dart';
 
@@ -22,7 +23,6 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-
   const MyHomePage({super.key, required this.title});
   final String title;
 
@@ -31,13 +31,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  late FlutterHyperPay flutterHyperPay ;
+  late FlutterHyperPay flutterHyperPay;
   @override
   void initState() {
     flutterHyperPay = FlutterHyperPay(
       shopperResultUrl: InAppPaymentSetting.shopperResultUrl, // For Android
-      paymentMode:  PaymentMode.test,
+      paymentMode: PaymentMode.test,
       lang: InAppPaymentSetting.getLang(),
     );
     super.initState();
@@ -47,10 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text("Payment"),
+        title: const Text("Payment"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        onPressed: () {
           getCheckOut();
         },
         child: const Icon(Icons.ads_click),
@@ -62,17 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
   /// http://dev.hyperpay.com/hyperpay-demo/getcheckoutid.php
 
   getCheckOut() async {
-    payRequestNow(checkoutId: '09ED05F7D9FE46B68EA21F780D3CD06F.prod01-vm-tx14', cardName: "VISA");
+    payRequestNow(
+        checkoutId: 'BC12C503A65CBE643F4A3C087E747D77.uat01-vm-tx03',
+        cardName: "VISA");
   }
 
   payRequestNow({required String cardName, required String checkoutId}) async {
-
     PaymentResultData paymentResultData;
-    if (cardName.toLowerCase() ==
-        InAppPaymentSetting.applePay.toLowerCase()) {
+    if (cardName.toLowerCase() == InAppPaymentSetting.applePay.toLowerCase()) {
       paymentResultData = await flutterHyperPay.payWithApplePay(
         applePay: ApplePay(
-          /// ApplePayBundel refer to Merchant ID
+
+            /// ApplePayBundel refer to Merchant ID
             applePayBundel: InAppPaymentSetting.merchantId,
             checkoutId: checkoutId,
             countryCode: InAppPaymentSetting.countryCode,
@@ -81,10 +81,10 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       paymentResultData = await flutterHyperPay.readyUICards(
         readyUI: ReadyUI(
-          brandName: cardName,
-          checkoutId: checkoutId,
-          setStorePaymentDetailsMode: false,
-        ),
+            brandName: cardName,
+            checkoutId: checkoutId,
+            setStorePaymentDetailsMode: false,
+            iosPluginColor: '#464674'),
       );
     }
 
@@ -92,19 +92,18 @@ class _MyHomePageState extends State<MyHomePage> {
         paymentResultData.paymentResult == PaymentResult.sync) {
       // do something
     }
-
   }
 }
 
 class InAppPaymentSetting {
-  static const String applePay="APPLEPAY";
-  static const String shopperResultUrl= "com.testpayment.payment";
-  static const String merchantId= "MerchantId";
-  static const String countryCode="SA";
-  static const String currencyCode="SAR";
+  static const String applePay = "APPLEPAY";
+  static const String shopperResultUrl = "com.testpayment.payment";
+  static const String merchantId = "MerchantId";
+  static const String countryCode = "SA";
+  static const String currencyCode = "SAR";
   static getLang() {
     if (Platform.isIOS) {
-      return  "en"; // ar
+      return "en"; // ar
     } else {
       return "en_US"; // ar_AR
     }
